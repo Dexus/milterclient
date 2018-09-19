@@ -3,13 +3,14 @@ package milterclient
 import (
 	"bytes"
 	"fmt"
-	"github.com/phalaaxx/milter"
 	"log"
 	"net"
 	"net/textproto"
 	"os"
 	"strings"
 	"testing"
+
+	"github.com/phalaaxx/milter"
 )
 
 /* ExtMilter object */
@@ -106,7 +107,7 @@ func TestMilterClient(t *testing.T) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	//defer socket.Close()
+	defer socket.Close()
 
 	// run server
 	go RunServer(socket)
@@ -119,8 +120,8 @@ func TestMilterClient(t *testing.T) {
 	}
 	defer eml.Close()
 
-	msgID := GenMtaID(12)
-	last, err := SendEml(eml, "127.0.0.1:12349", "from@unittest.de", "to@unittest.de", "", "", msgID, false, 5)
+	msgID := GenMtaID(15)
+	last, err := SendEml(eml, "127.0.0.1:12349", "from@unittest.de", "to@unittest.de", "", "", msgID, false, 10)
 	if err != nil {
 		t.Errorf("Error sending eml to milter: %v", err)
 	}
@@ -129,5 +130,5 @@ func TestMilterClient(t *testing.T) {
 	if last != SmfirAccept {
 		t.Errorf("Excepted Accept from Milter, got %v", last)
 	}
-	socket.Close()
+
 }

@@ -56,8 +56,8 @@ func SendEml(eml io.Reader, milterHostPort, from, to, sendingMtaHostname, sendin
 
 	go func() {
 		err1 := Session.ReadResponses(done)
-		if err1 != nil {
-			fmt.Printf("Error Reading: %v\n", err1)
+		if err1 != nil && err1 != io.EOF {
+			fmt.Printf("Error Reading: %#v\n", err1)
 		}
 	}()
 

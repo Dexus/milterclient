@@ -214,7 +214,7 @@ func parseCodeLine(line string, expectCode int) (code int, continued bool, messa
 	if 1 <= expectCode && expectCode < 10 && code/100 != expectCode ||
 		10 <= expectCode && expectCode < 100 && code/10 != expectCode ||
 		100 <= expectCode && expectCode < 1000 && code != expectCode {
-		err = &textproto.Error{code, message}
+		err = &textproto.Error{Code: code, Msg: message}
 	}
 	return
 }
@@ -290,7 +290,7 @@ func (r *Reader) ReadResponse(expectCode int) (code int, message string, err err
 	}
 	if err != nil && multi && message != "" {
 		// replace one line error message with all lines (full message)
-		err = &textproto.Error{code, message}
+		err = &textproto.Error{Code: code, Msg: message}
 	}
 	return
 }
